@@ -17,9 +17,17 @@ class MyHandler(FileSystemEventHandler):
         print("inbound message ", event.src_path)
         mess_path = event.src_path.strip()
         line = f"isbd decode {mess_path}"
+        line = f"isbd decode {mess_path}"
+        #RUN["/bin/bash", "-c", "MY_COMMAND_NAME MY_COMMAND_PARAMETERS"]
         #output = subprocess.check_output(['isbd decode', mess_path])
-        output = subprocess.run(line, shell=True)
+
+        output = subprocess.check_output(['/bin/bash', "-c", line])
         print(output)
+
+        #output = subprocess.run(line, shell=True)
+        #print(output)
+
+
 
 
         #if((event.src_path).strip() == ".\test.xml"):
