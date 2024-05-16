@@ -3,6 +3,7 @@ import os
 import subprocess
 import time
 import paho.mqtt.client as paho
+import json
 #rom paho.mqtt import client as mqtt_client
 
 from watchdog.observers import Observer
@@ -18,13 +19,12 @@ class MyHandler(FileSystemEventHandler):
         mess_path = event.src_path.strip()
         # line = f"isbd decode {mess_path}"
         line = f'node ../emu/exe/decode {mess_path}'
-        ret = os.system(line)
-        print("func res=", ret)
-        print(type(ret))
-        output = subprocess.check_output(['node','../emu/exe/decode', mess_path])
+        output = subprocess.check_output(['node', '../emu/exe/decode', mess_path])
         print(output)
         print(type(output))
-
+        alfa = json.loads(output.decode('utf-8'))
+        print(alfa)
+        print(type(alfa))
         #RUN["/bin/bash", "-c", "MY_COMMAND_NAME MY_COMMAND_PARAMETERS"]
         #output = subprocess.check_output(['isbd decode', mess_path])
 
