@@ -2,6 +2,8 @@ import sys
 import subprocess
 import time
 import paho.mqtt.client as paho
+#rom paho.mqtt import client as mqtt_client
+
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -35,18 +37,35 @@ def print_hi(name):
     payload = data["payload"]["payload"]
     result = ''.join(chr(i) for i in payload)
 
-    client = paho.Client(client_id="mqtt-tdevice")
+    client = paho.Client()
 
+
+
+    #client = paho.Client(client_id="mqtt-tdevice")
+    client = paho.Client(client_id="mqtt-tdevice",
+                         protocol=paho.MQTTv5)
     if client.connect("dev.rightech.io", 1883, 60) != 0:
         print("Couldn't connect to MQTT broker!")
         sys.exit(-1)
-
-    client.publish("base/state/temperature", "20.5")
-    client.publish("base/state/battery", "50")
-
+    print("connected to MQTT broker!")
+    res1 = client.publish("base/state/temperature", "20.5")
+    res2 = client.publish("base/state/battery", "50")
+    print(res1)
+    print(res2)
     client.disconnect()
 
-
+    # broker = 'dev.rightech.io'
+    # port = 1883
+    # topic_b = "base/state/battery"
+    # topic_t = "base/state/temperature"
+    # client_id = f'mqtt-tdevice'
+    #
+    # client = mqtt_client.Client(client_id)
+    # client.connect(broker, port)
+    # print(client)
+    #
+    # client.publish(topic_b, "25")
+    # client.publish(topic_t, "30")
 
     event_handler = MyHandler()
     observer = Observer()
