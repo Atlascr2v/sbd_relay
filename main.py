@@ -13,8 +13,12 @@ class MyHandler(FileSystemEventHandler):
     #    print(event.event_type, event.src_path)
 
     def on_created(self, event):
-        print("on_created", event.src_path)
-        print(event.src_path.strip())
+        print("inbound message ", event.src_path)
+        mess_path = event.src_path.strip()
+        line = f"isbd decode {mess_path}"
+        output = subprocess.getoutput(line)
+        print(output)
+
         #if((event.src_path).strip() == ".\test.xml"):
         #    print("Execute your logic here!")
 
@@ -37,22 +41,26 @@ def print_hi(name):
     payload = data["payload"]["payload"]
     result = ''.join(chr(i) for i in payload)
 
-    client = paho.Client()
-
-
-
     #client = paho.Client(client_id="mqtt-tdevice")
     client = paho.Client(client_id="mqtt-tdevice",
                          protocol=paho.MQTTv5)
     if client.connect("dev.rightech.io", 1883, 60) != 0:
         print("Couldn't connect to MQTT broker!")
         sys.exit(-1)
-    print("connected to MQTT broker!")
-    res1 = client.publish("base/state/temperature", "20.5")
-    res2 = client.publish("base/state/battery", "50")
-    print(res1)
-    print(res2)
-    client.disconnect()
+
+    started = time.time()
+    while time.time() - started < 5.0:
+        client.loop()
+        if client.is_connected():
+            print("connected to MQTT broker!")
+            res1 = client.publish("base/state/temperature", "20.5")
+            res2 = client.publish("base/state/battery", "55")
+            print(res1)
+            print(res2)
+            client.disconnect()
+
+
+
 
     # broker = 'dev.rightech.io'
     # port = 1883
