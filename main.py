@@ -22,7 +22,7 @@ class MyHandler(FileSystemEventHandler):
         #output = subprocess.check_output(['isbd decode', mess_path])
 
         #output = subprocess.check_output(['/bin/bash', "-c", line])
-        output = subprocess.Popen(line, shell=True)
+        output = subprocess.Popen(line, shell=False)
         print(output)
 
 
