@@ -34,6 +34,20 @@ def print_hi(name):
     payload = data["payload"]
     payload = data["payload"]["payload"]
     result = ''.join(chr(i) for i in payload)
+
+    client = paho.Client(client_id="mqtt-tdevice")
+
+    if client.connect("dev.rightech.io", 1883, 60) != 0:
+        print("Couldn't connect to MQTT broker!")
+        sys.exit(-1)
+
+    client.publish("base/state/temperature", "20.5")
+    client.publish("base/state/battery", "50")
+
+    client.disconnect()
+
+
+
     event_handler = MyHandler()
     observer = Observer()
     observer.schedule(event_handler, path='data/', recursive=False)
