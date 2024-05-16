@@ -16,8 +16,9 @@ class MyHandler(FileSystemEventHandler):
     def on_created(self, event):
         print("inbound message ", event.src_path)
         mess_path = event.src_path.strip()
-        #line = f"isbd decode {mess_path}"
-        output = subprocess.check_output(['isbd decode', mess_path])
+        line = f"isbd decode {mess_path}"
+        #output = subprocess.check_output(['isbd decode', mess_path])
+        output = subprocess.run(line, shell=True)
         print(output)
 
 
