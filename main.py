@@ -110,8 +110,13 @@ def print_hi(name):
 if __name__ == '__main__':
     line = f"isbd decode ../isbd_rx/data/tes1/300234061641700_07164.sbd"
 
-    output = subprocess.Popen(line, shell=True)
-    print(output)
+    proc = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    stdout = proc.communicate(line)
+
+    print(stdout)
+
+    #output = subprocess.Popen(line, shell=True)
+    #print(output)
 
     print_hi('PyCharm')
 
