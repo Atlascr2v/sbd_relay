@@ -1,4 +1,5 @@
 import sys
+import os
 import subprocess
 import time
 import paho.mqtt.client as paho
@@ -16,8 +17,9 @@ class MyHandler(FileSystemEventHandler):
         print("inbound message ", event.src_path)
         mess_path = event.src_path.strip()
         #line = f"isbd decode {mess_path}"
-        output = subprocess.getoutput(["isbd", "decode", "mess_path"])
+        output = subprocess.getoutput(["isbd decode", "mess_path"])
         print(output)
+
 
         #if((event.src_path).strip() == ".\test.xml"):
         #    print("Execute your logic here!")
@@ -99,9 +101,6 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-
-
-
     print_hi('PyCharm')
 
 
