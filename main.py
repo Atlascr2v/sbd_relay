@@ -10,14 +10,14 @@ from watchdog.events import FileSystemEventHandler
 
 
 class MyHandler(FileSystemEventHandler):
-    #def on_any_event(self, event):
-    #    print(event.event_type, event.src_path)
+    def on_any_event(self, event):
+        print(event.event_type, event.src_path)
 
     def on_created(self, event):
         print("inbound message ", event.src_path)
         mess_path = event.src_path.strip()
         # line = f"isbd decode {mess_path}"
-        line = 'node ../emu/exe/decode {mess_path}'
+        line = f'node ../emu/exe/decode {mess_path}'
         ret = os.system(line)
         print(ret)
 
@@ -123,7 +123,6 @@ if __name__ == '__main__':
 
     #output = subprocess.Popen(line, shell=True)
     #print(output)
-
 
     print_hi('PyCharm')
 
