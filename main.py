@@ -77,7 +77,7 @@ def print_hi(name):
 
     event_handler = MyHandler()
     observer = Observer()
-    observer.schedule(event_handler, path='data/', recursive=False)
+    observer.schedule(event_handler, path='../isbd_rx/data/mo/', recursive=False)
     observer.start()
 
     while True:
