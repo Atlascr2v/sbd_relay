@@ -17,7 +17,7 @@ class MyHandler(FileSystemEventHandler):
         print("inbound message ", event.src_path)
         mess_path = event.src_path.strip()
         #line = f"isbd decode {mess_path}"
-        output = subprocess.getoutput(["isbd decode", mess_path])
+        output = subprocess.getoutput(["isbd", "decode", mess_path])
         print(output)
 
 
