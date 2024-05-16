@@ -16,8 +16,11 @@ class MyHandler(FileSystemEventHandler):
     def on_created(self, event):
         print("inbound message ", event.src_path)
         mess_path = event.src_path.strip()
-        #line = f"isbd decode {mess_path}"
-        line = f"isbd decode {mess_path}"
+        # line = f"isbd decode {mess_path}"
+        line = 'node ../emu/exe/decode {mess_path}'
+        ret = os.system(line)
+        print(ret)
+
         #RUN["/bin/bash", "-c", "MY_COMMAND_NAME MY_COMMAND_PARAMETERS"]
         #output = subprocess.check_output(['isbd decode', mess_path])
 
@@ -117,8 +120,7 @@ if __name__ == '__main__':
     #
     # print(stdout)
 
-    ret = os.system('node ../emu/exe/decode --help')
-    print(ret)
+
     #output = subprocess.Popen(line, shell=True)
     #print(output)
 
