@@ -10,8 +10,8 @@ from watchdog.events import FileSystemEventHandler
 
 
 class MyHandler(FileSystemEventHandler):
-    def on_any_event(self, event):
-        print(event.event_type, event.src_path)
+    #def on_any_event(self, event):
+    #    print(event.event_type, event.src_path)
 
     def on_created(self, event):
         print("inbound message ", event.src_path)
@@ -19,7 +19,11 @@ class MyHandler(FileSystemEventHandler):
         # line = f"isbd decode {mess_path}"
         line = f'node ../emu/exe/decode {mess_path}'
         ret = os.system(line)
-        print(ret)
+        print("func res=", ret)
+        print(type(ret))
+        output = subprocess.check_output(['node','../emu/exe/decode', mess_path])
+        print(output)
+        print(type(output))
 
         #RUN["/bin/bash", "-c", "MY_COMMAND_NAME MY_COMMAND_PARAMETERS"]
         #output = subprocess.check_output(['isbd decode', mess_path])
