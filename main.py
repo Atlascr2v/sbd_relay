@@ -22,8 +22,8 @@ class MyHandler(FileSystemEventHandler):
         #output = subprocess.check_output(['isbd decode', mess_path])
 
         #output = subprocess.check_output(['/bin/bash', "-c", line])
-        output = subprocess.Popen(line, shell=False)
-        print(output)
+        #output = subprocess.Popen(line, shell=False)
+        #print(output)
 
 
 
@@ -108,6 +108,11 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    line = f"isbd decode ../isbd_rx/data/tes1/300234061641700_07164.sbd"
+
+    output = subprocess.Popen(line, shell=True)
+    print(output)
+
     print_hi('PyCharm')
 
 
