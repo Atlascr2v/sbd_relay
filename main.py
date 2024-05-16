@@ -117,7 +117,7 @@ if __name__ == '__main__':
     #
     # print(stdout)
 
-    ret = os.system('isbd decode --help')
+    ret = os.system('node ../emu/decode --help')
     print(ret)
     #output = subprocess.Popen(line, shell=True)
     #print(output)
