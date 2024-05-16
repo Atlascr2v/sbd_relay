@@ -108,15 +108,20 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    line = f"isbd decode ../isbd_rx/data/tes1/300234061641700_07164.sbd"
+    # line = f"isbd decode ../isbd_rx/data/tes1/300234061641700_07164.sbd"
+    # #mess_path = event.src_path.strip()
+    # # line = f"isbd decode {mess_path}"
+    #
+    # proc = subprocess.Popen(['isbd', ], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    # stdout = proc.communicate(line)
+    #
+    # print(stdout)
 
-    proc = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    stdout = proc.communicate(line)
-
-    print(stdout)
-
+    ret = os.system('isbd decode --help')
+    print(ret)
     #output = subprocess.Popen(line, shell=True)
     #print(output)
+
 
     print_hi('PyCharm')
 
