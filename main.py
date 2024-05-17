@@ -10,6 +10,38 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 
+def transmmit(data):
+    payload = data["payload"]
+    payload = data["payload"]["payload"]
+    result = ''.join(chr(i) for i in payload)
+    parsed = json.loads(result)
+    print(parsed)
+
+    #{'m_time': 1715942689.243061, 'temp': 14, 'bat': 99}
+
+    client = paho.Client(client_id="mqtt-tdevice",
+                         protocol=paho.MQTTv5)
+    if client.connect("dev.rightech.io", 1883, 60) != 0:
+        print("Couldn't connect to MQTT broker!")
+        return
+        #sys.exit(-1)
+
+    started = time.time()
+    while time.time() - started < 5.0:
+        client.loop()
+        if client.is_connected():
+            res1 = client.publish(f"base/state/temperature", {parsed["temp"]})
+            res2 = client.publish(f"base/state/battery", {parsed["bat"]})
+            res3 = client.publish(f"base/state/time", {parsed["time"]})
+            print(res1)
+            print(res2)
+            print(res3)
+            client.disconnect()
+            print("all good")
+            return
+    print("connect fail")
+
+
 class MyHandler(FileSystemEventHandler):
     #def on_any_event(self, event):
     #    print(event.event_type, event.src_path)
@@ -17,14 +49,13 @@ class MyHandler(FileSystemEventHandler):
     def on_created(self, event):
         print("inbound message ", event.src_path)
         mess_path = event.src_path.strip()
-        # line = f"isbd decode {mess_path}"
         line = f'node ../emu/exe/decode {mess_path}'
         output = subprocess.check_output(['node', '../emu/exe/decode', mess_path])
-        print(output)
-        print(type(output))
+
         alfa = json.loads(output.decode('utf-8'))
-        print(alfa)
-        print(type(alfa))
+        transmmit(alfa)
+        #print(alfa)
+
         #RUN["/bin/bash", "-c", "MY_COMMAND_NAME MY_COMMAND_PARAMETERS"]
         #output = subprocess.check_output(['isbd decode', mess_path])
 
@@ -57,39 +88,8 @@ def print_hi(name):
     payload = data["payload"]["payload"]
     result = ''.join(chr(i) for i in payload)
 
-    #client = paho.Client(client_id="mqtt-tdevice")
-    client = paho.Client(client_id="mqtt-tdevice",
-                         protocol=paho.MQTTv5)
-    if client.connect("dev.rightech.io", 1883, 60) != 0:
-        print("Couldn't connect to MQTT broker!")
-        sys.exit(-1)
-
-    started = time.time()
-    while time.time() - started < 5.0:
-        client.loop()
-        if client.is_connected():
-            print("connected to MQTT broker!")
-            res1 = client.publish("base/state/temperature", "20.5")
-            res2 = client.publish("base/state/battery", "55")
-            print(res1)
-            print(res2)
-            client.disconnect()
 
 
-
-
-    # broker = 'dev.rightech.io'
-    # port = 1883
-    # topic_b = "base/state/battery"
-    # topic_t = "base/state/temperature"
-    # client_id = f'mqtt-tdevice'
-    #
-    # client = mqtt_client.Client(client_id)
-    # client.connect(broker, port)
-    # print(client)
-    #
-    # client.publish(topic_b, "25")
-    # client.publish(topic_t, "30")
 
     event_handler = MyHandler()
     observer = Observer()
@@ -115,19 +115,6 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # line = f"isbd decode ../isbd_rx/data/tes1/300234061641700_07164.sbd"
-    # #mess_path = event.src_path.strip()
-    # # line = f"isbd decode {mess_path}"
-    #
-    # proc = subprocess.Popen(['isbd', ], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    # stdout = proc.communicate(line)
-    #
-    # print(stdout)
-
-
-    #output = subprocess.Popen(line, shell=True)
-    #print(output)
-
     print_hi('PyCharm')
 
 
