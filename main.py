@@ -30,9 +30,9 @@ def transmmit(data):
     while time.time() - started < 5.0:
         client.loop()
         if client.is_connected():
-            res1 = client.publish(f"base/state/temperature", {parsed["temp"]})
-            res2 = client.publish(f"base/state/battery", {parsed["bat"]})
-            res3 = client.publish(f"base/state/time", {parsed["m_time"]})
+            res1 = client.publish("base/state/temperature", parsed["temp"])
+            res2 = client.publish("base/state/battery", parsed["bat"])
+            res3 = client.publish("base/state/time", parsed["m_time"])
             print(res1)
             print(res2)
             print(res3)
