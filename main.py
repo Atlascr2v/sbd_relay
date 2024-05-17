@@ -11,35 +11,40 @@ from watchdog.events import FileSystemEventHandler
 
 
 def transmmit(data):
-    payload = data["payload"]
-    payload = data["payload"]["payload"]
-    result = ''.join(chr(i) for i in payload)
-    parsed = json.loads(result)
-    print(parsed)
+    if data:
+        try:
+            payload = data["payload"]
+            payload = data["payload"]["payload"]
+            result = ''.join(chr(i) for i in payload)
+            parsed = json.loads(result)
+            print(parsed)
 
-    #{'m_time': 1715942689.243061, 'temp': 14, 'bat': 99}
+            #{'m_time': 1715942689.243061, 'temp': 14, 'bat': 99}
 
-    client = paho.Client(client_id="mqtt-tdevice",
-                         protocol=paho.MQTTv5)
-    if client.connect("dev.rightech.io", 1883, 60) != 0:
-        print("Couldn't connect to MQTT broker!")
-        return
-        #sys.exit(-1)
+            client = paho.Client(client_id="mqtt-tdevice",
+                                 protocol=paho.MQTTv5)
+            if client.connect("dev.rightech.io", 1883, 60) != 0:
+                print("Couldn't connect to MQTT broker!")
+                return
+                #sys.exit(-1)
 
-    started = time.time()
-    while time.time() - started < 5.0:
-        client.loop()
-        if client.is_connected():
-            res1 = client.publish("base/state/temperature", parsed["temp"])
-            res2 = client.publish("base/state/battery", parsed["bat"])
-            res3 = client.publish("base/state/time", parsed["m_time"])
-            print(res1)
-            print(res2)
-            print(res3)
-            client.disconnect()
-            print("all good")
-            return
-    print("connect fail")
+            started = time.time()
+            while time.time() - started < 5.0:
+                client.loop()
+                if client.is_connected():
+                    res1 = client.publish("base/state/temperature", parsed["temp"])
+                    res2 = client.publish("base/state/battery", parsed["bat"])
+                    res3 = client.publish("base/state/time", parsed["m_time"])
+                    print(res1)
+                    print(res2)
+                    print(res3)
+                    client.disconnect()
+                    print("all good")
+                    return
+            print("connect fail")
+        except Exception as e:
+            print(str(e))
+
 
 
 class MyHandler(FileSystemEventHandler):
