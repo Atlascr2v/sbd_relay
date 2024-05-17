@@ -32,7 +32,7 @@ def transmmit(data):
         if client.is_connected():
             res1 = client.publish(f"base/state/temperature", {parsed["temp"]})
             res2 = client.publish(f"base/state/battery", {parsed["bat"]})
-            res3 = client.publish(f"base/state/time", {parsed["time"]})
+            res3 = client.publish(f"base/state/time", {parsed["m_time"]})
             print(res1)
             print(res2)
             print(res3)
